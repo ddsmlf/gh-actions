@@ -10,7 +10,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: python-3.10.0-darwin-x64
+          python-version: python-3.10.1
 
       - name: Install dependencies
         run: |
