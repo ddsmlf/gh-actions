@@ -20,12 +20,25 @@ Assurez-vous d'avoir les éléments suivants installés :
 1. Lancez le script `train.py` pour entraîner le modèle de classification.
 2. Utilisez le script `predict.py` pour effectuer des prédictions sur de nouvelles images.
 
-## Ressources supplémentaires
+## Information sur le modèle
 
-- [Documentation de TensorFlow](https://www.tensorflow.org/)
-- [Guide de classification d'images avec TensorFlow](https://www.tensorflow.org/tutorials/images/classification)
+1. **Couches de convolution (`Conv2D`) :**
+   - Les couches de convolution sont responsables de l'extraction des caractéristiques des images. Elles utilisent des filtres pour détecter des motifs tels que les bords, les formes, et les textures.
+   - Dans ce modèle, la première couche `Conv2D` a 32 filtres de taille (3, 3), ce qui signifie qu'elle applique 32 filtres 3x3 à l'image d'entrée.
+   - La deuxième couche `Conv2D` a 64 filtres de taille (3, 3). Cela permet d'apprendre des caractéristiques plus complexes par rapport à la première couche.
 
-N'hésitez pas à explorer le code source pour plus de détails sur l'implémentation.
+2. **Couches de pooling (`MaxPooling2D`) :**
+   - Les couches de pooling (mise en commun) réduisent la dimension spatiale des images et conservent les caractéristiques les plus importantes. Elles réduisent également le nombre de paramètres et le coût de calcul.
+   - Dans ce modèle, après chaque couche de convolution, une couche `MaxPooling2D` avec une fenêtre de (2, 2) est utilisée. Cela réduit la taille de l'image de moitié à chaque fois.
+
+3. **Couche de flattening (`Flatten`) :**
+   - Cette couche transforme les données en un vecteur unidimensionnel. Elle prend la sortie de la dernière couche de pooling et la "déroule" pour l'aplatir avant de passer à des couches entièrement connectées.
+
+4. **Couches entièrement connectées (`Dense`) :**
+   - Ces couches utilisent tous les neurones pour apprendre des motifs complexes et effectuer la classification finale.
+   - La première couche `Dense` a 128 neurones, activés par la fonction ReLU. Cela permet au modèle d'apprendre des combinaisons complexes de caractéristiques extraites par les couches précédentes.
+   - La dernière couche `Dense` a 1 neurone avec une fonction d'activation `sigmoid` car il s'agit d'un problème de classification binaire (chien ou chat). La fonction `sigmoid` produit une sortie entre 0 et 1, indiquant la probabilité d'appartenance à la classe positive.
+
 
 ## Auteurs
 
