@@ -1,4 +1,4 @@
-att# Classification de Chats et Chiens
+# Classification de Chats et Chiens
 
 Ce projet vise à réaliser une classification d'images de chats et de chiens en utilisant le dataset Microsoft Cats and Dogs. Le dataset peut être téléchargé à partir du lien suivant : [Microsoft Cats and Dogs Dataset](https://www.microsoft.com/en-us/download/details.aspx?id=54765).
 
@@ -6,19 +6,29 @@ Ce projet vise à réaliser une classification d'images de chats et de chiens en
 
 1. Clonez ce dépôt sur votre machine locale.
 2. Téléchargez le dataset Microsoft Cats and Dogs à partir du lien mentionné ci-dessus.
-3. Extrayez les fichiers du dataset dans le répertoire `data` du projet.
+3. Extrayez les fichiers du dataset dans le répertoire `data` du projet. 
+4. Séparer les fichiers de la facon suivante :
+```
+> data
+>> train
+>>> Dog
+>>> Cat
+>> test
+>>> Dog
+>>> Cat
+```
 
 ## Prérequis
 
 Assurez-vous d'avoir les éléments suivants installés :
 
-- Python 3.x
+- Python 3.10
 - Les bibliothèques nécessaires (voir le fichier `requirements.txt`)
 
 ## Utilisation
 
-1. Lancez le script `train.py` pour entraîner le modèle de classification.
-2. Utilisez le script `predict.py` pour effectuer des prédictions sur de nouvelles images.
+1. Lancez le script `modele.py` en changant les lignes du if main == name pour entraîner ou l'évaluer le modèle de classification.
+2. Utilisez le script `main.py` pour effectuer des prédictions sur de nouvelles images garec a l'interface.
 
 ## Information sur le modèle
 
@@ -42,9 +52,7 @@ Assurez-vous d'avoir les éléments suivants installés :
 
 ## Auteurs
 
-- Votre nom
-- Autre contributeur (le cas échéant)
+- COLIN Mélissa
+- Junior Bruce
 
-## Licence
 
-Ce projet est sous licence MIT. Veuillez consulter le fichier `LICENSE` pour plus d'informations.
