@@ -1,3 +1,9 @@
-# Ignore the 'data' directory
-data/
-data_desorganized
+*.h5
+# igonre toutes les images :
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tif
+
