@@ -171,7 +171,6 @@ def _data_normalized(path_data):
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(Y)
 
-    # Assurez-vous que les étiquettes sont encodées correctement pour une classification binaire
     y_encoded = to_categorical(y_encoded, num_classes=2)
 
     print("Normaliser les valeurs des pixels des images...")

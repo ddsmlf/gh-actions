@@ -1,10 +1,10 @@
 from tensorflow.keras.models import Sequential, save_model
 from tensorflow.keras.layers import Flatten, Dense
 from tensorflow.keras.optimizers import SGD
-from data_traitement import data_load
+from utils.data_traitement import data_load
 import os
 
-def entrainer_modele(epoch=5, batch_size=32, weight_name="model", learning_rate=0.01):
+def train_model(epoch=5, batch_size=32, weight_name="model", learning_rate=0.01):
     weight_name = "weights/" + weight_name
     i = 1
     while os.path.exists(weight_name):
@@ -34,4 +34,4 @@ def entrainer_modele(epoch=5, batch_size=32, weight_name="model", learning_rate=
 
 
 if __name__ == "__main__":
-    entrainer_modele(epoch=10)
+    train_model(epoch=10)
