@@ -3,7 +3,9 @@ import os
 from sklearn.model_selection import train_test_split
 import shutil
 from PIL import Image
+import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.utils import to_categorical
 
 
 
@@ -153,6 +155,7 @@ def _organize_data(data_desorganized_path):
 
     return True
 
+
 def _data_normalized(path_data):
     print("Chargement des images de no_cats...")
     images_no_cat, labels_no_cat = charger_images(os.path.join(path_data, "no-cat"), "no-cat")
@@ -168,10 +171,14 @@ def _data_normalized(path_data):
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(Y)
 
+    # Assurez-vous que les étiquettes sont encodées correctement pour une classification binaire
+    y_encoded = to_categorical(y_encoded, num_classes=2)
+
     print("Normaliser les valeurs des pixels des images...")
     X_normalized = X / 255.0
 
     return X_normalized, y_encoded
+
 
 
 def data_load(type = None, img_path = None):
