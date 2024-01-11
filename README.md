@@ -1,21 +1,21 @@
-# Classification de Chats et Chiens
+# Classification de Chats et no_cats
 
-Ce projet vise à réaliser une classification d'images de chats et de chiens en utilisant le dataset Microsoft Cats and Dogs. Le dataset peut être téléchargé à partir du lien suivant : [Microsoft Cats and Dogs Dataset](https://www.microsoft.com/en-us/download/details.aspx?id=54765).
+Ce projet vise à réaliser une classification d'images de chats et non-chats. Les test on été effectué sur des datasets qui peuvent être téléchargé à partir des lien suivants : [Kaggle](https://www.kaggle.com/datasets/iamsouravbanerjee/animal-image-dataset-90-different-animals?resource=download) et [Archive.org](https://archive.org/details/CAT_DATASET).
 
 ## Installation
 
 1. Clonez ce dépôt sur votre machine locale.
-2. Téléchargez le dataset Microsoft Cats and Dogs à partir du lien mentionné ci-dessus.
+2. Téléchargez le dataset Microsoft cats and no-cats à partir du lien mentionné ci-dessus.
 3. Extrayez les fichiers du dataset dans le répertoire `data` du projet. 
 4. Séparer les fichiers de la facon suivante :
 ```
 > data
 >> train
->>> Dog
->>> Cat
+>>> no-cat
+>>> cat
 >> test
->>> Dog
->>> Cat
+>>> no-cat
+>>> cat
 ```
 
 ## Prérequis
@@ -47,7 +47,7 @@ Assurez-vous d'avoir les éléments suivants installés :
 4. **Couches entièrement connectées (`Dense`) :**
    - Ces couches utilisent tous les neurones pour apprendre des motifs complexes et effectuer la classification finale.
    - La première couche `Dense` a 128 neurones, activés par la fonction ReLU. Cela permet au modèle d'apprendre des combinaisons complexes de caractéristiques extraites par les couches précédentes.
-   - La dernière couche `Dense` a 1 neurone avec une fonction d'activation `sigmoid` car il s'agit d'un problème de classification binaire (chien ou chat). La fonction `sigmoid` produit une sortie entre 0 et 1, indiquant la probabilité d'appartenance à la classe positive.
+   - La dernière couche `Dense` a 1 neurone avec une fonction d'activation `sigmoid` car il s'agit d'un problème de classification binaire (no_cat ou chat). La fonction `sigmoid` produit une sortie entre 0 et 1, indiquant la probabilité d'appartenance à la classe positive.
 
 
 ## Auteurs

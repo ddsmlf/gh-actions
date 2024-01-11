@@ -6,9 +6,9 @@ from modele import SimpleImageClassifier
 class ImageClassifierApp:
     def __init__(self, master):
         self.master = master
-        self.master.title("Bienvenue dans votre application de classification d'images de chats et chiens")
+        self.master.title("Bienvenue dans votre application de classification d'images de chats et no_cats")
 
-        self.welcome_label = tk.Label(self.master, text="Bienvenue dans votre application de classification d'images de chats et chiens")
+        self.welcome_label = tk.Label(self.master, text="Bienvenue dans votre application de classification d'images de chats et no_cats")
         self.welcome_label.pack(pady=20)
         self.classifier = SimpleImageClassifier()
         self.continue_button = tk.Button(self.master, text="Continuer", command=self.show_main_interface)
