@@ -1,0 +1,12 @@
+accuracy: 0.7800546448087432
+confusion_matrix: [[1585  275]
+ [ 369  699]]
+classification_report:               precision    recall  f1-score   support
+
+     No-Chat       0.81      0.85      0.83      1860
+        Chat       0.72      0.65      0.68      1068
+
+    accuracy                           0.78      2928
+   macro avg       0.76      0.75      0.76      2928
+weighted avg       0.78      0.78      0.78      2928
+
