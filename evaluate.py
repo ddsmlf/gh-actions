@@ -1,27 +1,76 @@
-from sklearn.metrics import accuracy_score
+from tensorflow.keras.models import load_model
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.layers import Flatten, Dense
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.utils import to_categorical
+from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+import numpy as np
 
 from data_traitement import data_load
 
-def evaluer_modele(modele_poids):
-    X, y = data_load(type = "test")
-    model = Sequential()
-    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)))
-    model.add(MaxPooling2D((2, 2)))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D((2, 2)))
-    model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dense(1, activation='sigmoid'))
+def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classification_report'], save_plots=True, save_txt=True):
+    """
+    Évalue le modèle sur les données de test.
 
-    model.load_weights(modele_poids)
+    Parameters:
+        model (tensorflow.keras.models.Sequential): Le modèle à évaluer.
+        X (numpy.ndarray): Les données de test.
+        y_test (numpy.ndarray): Les étiquettes de test.
+        metrics (list): Les métriques à calculer. Options : ['accuracy', 'confusion_matrix', 'classification_report']
+        save_plots (bool): Si True, sauvegarde les graphiques dans un dossier spécifique.
+        save_txt (bool): Si True, enregistre les métriques textuelles dans un fichier texte.
 
-    predictions = model.predict(X)
-    y_pred = (predictions > 0.5).astype(int)
+    Returns:
+        None
+    """
+    depo = "metrics/"+model_path.split("/")[-1]
+    depo = depo.split(".")[0]
+    if not os.path.exists(depo):
+        os.makedirs(depo)
 
-    accuracy = accuracy_score(y, y_pred)
-    print(f"Précision du modèle : {accuracy * 100:.2f}%")
+    X, y_test = data_load(type="test")
+    
+    model = load_model(model_path)
 
-if __name__ == "__main__":
-    evaluer_modele("modele_poids.h5")
+    # Prédictions sur les données de test
+    y_pred = model.predict(X)
+    y_pred_classes = np.argmax(y_pred, axis=1)
+
+    results = {}
+
+    # Calcul de l'exactitude (accuracy)
+    if 'accuracy' in metrics:
+        accuracy = np.sum(y_pred_classes == np.argmax(y_test, axis=1)) / len(y_test)
+        results['accuracy'] = accuracy
+
+    # Calcul de la matrice de confusion
+    if 'confusion_matrix' in metrics:
+        conf_matrix = confusion_matrix(np.argmax(y_test, axis=1), y_pred_classes)
+        results['confusion_matrix'] = conf_matrix
+        if save_plots:
+            plt.figure(figsize=(8, 6))
+            sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['No-Chat', 'Chat'], yticklabels=['No-Chat', 'Chat'])
+            plt.title('Matrice de Confusion')
+            plt.xlabel('Prédictions')
+            plt.ylabel('Vraies étiquettes')
+            plt.savefig(depo+'confusion_matrix.png')
+
+    # Calcul du rapport de classification
+    if 'classification_report' in metrics:
+        class_report = classification_report(np.argmax(y_test, axis=1), y_pred_classes, target_names=['No-Chat', 'Chat'])
+        results['classification_report'] = class_report
+
+    # Enregistrement des métriques textuelles dans un fichier
+    if save_txt:
+        with open(depo+'metrics.txt', 'w') as file:
+            for metric, value in results.items():
+                file.write(f'{metric}: {value}\n')
+
+    print(f"Les métriques ont été enregistrées dans le dossier {depo}.")
+
+
+evaluate_model("weights/model.tf", metrics=['accuracy', 'confusion_matrix', 'classification_report'])

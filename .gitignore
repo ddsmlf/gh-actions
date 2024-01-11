@@ -1,4 +1,9 @@
 *.h5
+*.tf
+metrics/*/
+data/*/
+data_desorganized/cat/*/
+data_desorganized/no-cat/*/
 # igonre toutes les images :
 *.png
 *.jpg
@@ -6,4 +11,7 @@
 *.gif
 *.bmp
 *.tif
+
+
+__pycache__/
 

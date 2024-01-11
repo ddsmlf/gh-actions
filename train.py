@@ -1,14 +1,14 @@
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, save_model
 from tensorflow.keras.layers import Flatten, Dense
 from tensorflow.keras.optimizers import SGD
 from data_traitement import data_load
 import os
 
-def entrainer_modele(epoch=5, batch_size=32, weight_name="modele", learning_rate=0.01):
-    weight_name = "weights/" + weight_name + ".h5"
-    i=1
+def entrainer_modele(epoch=5, batch_size=32, weight_name="model", learning_rate=0.01):
+    weight_name = "weights/" + weight_name
+    i = 1
     while os.path.exists(weight_name):
-        weight_name = weight_name[:-3] + "_"+ str(i) + ".h5"
+        weight_name = weight_name[:-3] + "_" + str(i)
         i += 1
     X, y = data_load(type="train")
 
@@ -28,12 +28,10 @@ def entrainer_modele(epoch=5, batch_size=32, weight_name="modele", learning_rate
     print("Entraînement du modèle...")
     model.fit(X, y, epochs=epoch, batch_size=batch_size, validation_split=0.2)
 
-    print("Sauvegarder les poids du modèle...")
-    model.save_weights(weight_name)
-    print("Les poids du modèle ont été sauvegardés.")
+    print("Sauvegarder le modèle avec sa configuration...")
+    model.save(weight_name + ".tf")
+    print("Le modèle avec sa configuration a été sauvegardé.")
 
 
 if __name__ == "__main__":
     entrainer_modele(epoch=10)
-    entrainer_modele(epoch=10, learning_rate=0.001, weight_name="modele_lr_0.001")
-    entrainer_modele(epoch=10, learning_rate=0.1, weight_name="modele_lr_0.1")
