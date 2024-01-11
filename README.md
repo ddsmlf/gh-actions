@@ -8,7 +8,7 @@ Ce projet vise à réaliser une classification d'images de chats et non-chats. L
 2. Téléchargez le dataset Microsoft cats and no-cats à partir du lien mentionné ci-dessus.
 3. Extrayez les fichiers du dataset dans le répertoire `data` du projet. 
 4. Séparer les fichiers de la facon suivante :
-```
+```bash
 > data
 >> train
 >>> no-cat
@@ -27,8 +27,40 @@ Assurez-vous d'avoir les éléments suivants installés :
 
 ## Utilisation
 
-1. Lancez le script `modele.py` en changant les lignes du if main == name pour entraîner ou l'évaluer le modèle de classification.
-2. Utilisez le script `main.py` pour effectuer des prédictions sur de nouvelles images garec a l'interface.
+### Utilisation
+
+Pour utiliser ce projet, vous pouvez exécuter le fichier `main.py` avec les arguments suivants :
+
+- `--train` : pour entraîner le modèle.
+   - `--epoch` : nombre d'époques d'entraînement (par défaut: 5).
+   - `--batch_size` : taille du batch d'entraînement (par défaut: 32).
+   - `--weight_name` : nom du fichier de sauvegarde des poids du modèle (par défaut: 'model').
+   - `--learning_rate` : taux d'apprentissage du modèle (par défaut: 0.01).
+
+- `--eval` : pour évaluer le modèle.
+   - `--model_path` : chemin vers le fichier de poids du modèle (par défaut: 'weights/model.tf').
+   - `--metrics` : liste des métriques à calculer (par défaut: ['accuracy', 'confusion_matrix', 'classification_report']).
+   - `--no_save_cm` : désactiver la sauvegarde de la matrice de confusion (par défaut: True).
+   - `--no_save_txt` : désactiver la sauvegarde du rapport de classification (par défaut: True).
+
+- `--detect` : pour détecter une image.
+   - `--image_path` : chemin vers l'image à détecter (obligatoire).
+   - `--model_path` : chemin vers le fichier de poids du modèle (par défaut: 'weights/model.tf').
+
+Si vous spécifiez plusieurs arguments parmi 'train', 'eval' et 'detect', une erreur sera levée.
+
+Si vous ne spécifiez aucun arguments vosu pourrez acceder a l'interface pour effectuer une inference sur l'iamge et avec le poid de votre choix.
+
+Exemples d'utilisation :
+```bash
+
+python main.py 
+```
+```bash
+
+python main.py --eval --model_path weights/model_890.tf
+```
+
 
 ## Information sur le modèle
 
@@ -49,10 +81,5 @@ Assurez-vous d'avoir les éléments suivants installés :
    - La première couche `Dense` a 128 neurones, activés par la fonction ReLU. Cela permet au modèle d'apprendre des combinaisons complexes de caractéristiques extraites par les couches précédentes.
    - La dernière couche `Dense` a 1 neurone avec une fonction d'activation `sigmoid` car il s'agit d'un problème de classification binaire (no_cat ou chat). La fonction `sigmoid` produit une sortie entre 0 et 1, indiquant la probabilité d'appartenance à la classe positive.
 
-
-## Auteurs
-
-- COLIN Mélissa
-- Junior Bruce
 
 

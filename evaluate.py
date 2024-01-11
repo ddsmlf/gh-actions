@@ -10,9 +10,9 @@ import seaborn as sns
 import os
 import numpy as np
 
-from data_traitement import data_load
+from utils.data_traitement import data_load
 
-def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classification_report'], save_plots=True, save_txt=True):
+def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classification_report'], save_cm=True, save_txt=True):
     """
     Évalue le modèle sur les données de test.
 
@@ -21,7 +21,7 @@ def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classif
         X (numpy.ndarray): Les données de test.
         y_test (numpy.ndarray): Les étiquettes de test.
         metrics (list): Les métriques à calculer. Options : ['accuracy', 'confusion_matrix', 'classification_report']
-        save_plots (bool): Si True, sauvegarde les graphiques dans un dossier spécifique.
+        save_cm (bool): Si True, sauvegarde les graphiques dans un dossier spécifique.
         save_txt (bool): Si True, enregistre les métriques textuelles dans un fichier texte.
 
     Returns:
@@ -51,7 +51,7 @@ def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classif
     if 'confusion_matrix' in metrics:
         conf_matrix = confusion_matrix(np.argmax(y_test, axis=1), y_pred_classes)
         results['confusion_matrix'] = conf_matrix
-        if save_plots:
+        if save_cm:
             plt.figure(figsize=(8, 6))
             sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['No-Chat', 'Chat'], yticklabels=['No-Chat', 'Chat'])
             plt.title('Matrice de Confusion')
@@ -72,5 +72,5 @@ def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classif
 
     print(f"Les métriques ont été enregistrées dans le dossier {depo}.")
 
-
-evaluate_model("weights/model.tf", metrics=['accuracy', 'confusion_matrix', 'classification_report'])
+if __name__ == "__main__":
+    evaluate_model("weights/model.tf", metrics=['accuracy', 'confusion_matrix', 'classification_report'])
