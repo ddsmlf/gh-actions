@@ -1,3 +1,10 @@
+import os
+
+# Désactiver les options d'optimisation OneDNN
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+from utils.utils import clear_terminal
+
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense
@@ -7,7 +14,6 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
-import os
 import numpy as np
 
 from utils.data_traitement import data_load
@@ -69,7 +75,7 @@ def evaluate_model(model_path, metrics=['accuracy', 'confusion_matrix', 'classif
         with open(depo+'metrics.txt', 'w') as file:
             for metric, value in results.items():
                 file.write(f'{metric}: {value}\n')
-
+    clear_terminal()
     print(f"Les métriques ont été enregistrées dans le dossier {depo}.")
 
 if __name__ == "__main__":

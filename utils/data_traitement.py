@@ -1,11 +1,17 @@
-from utils.utils import *
 import os
+
+# Désactiver les options d'optimisation OneDNN
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+from utils.utils import *
+from utils.data_augmentation import data_augmentation
 from sklearn.model_selection import train_test_split
 import shutil
 from PIL import Image
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
+
 
 
 
@@ -157,30 +163,25 @@ def _organize_data(data_desorganized_path):
 
 
 def _data_normalized(path_data):
-    print("Chargement des images de no_cats...")
     images_no_cat, labels_no_cat = charger_images(os.path.join(path_data, "no-cat"), "no-cat")
 
-    print("Chargement des images de chats...")
     images_chat, labels_chat = charger_images(os.path.join(path_data, "cat"), "chat")
 
-    print("Concaténer les données...")
     X = np.concatenate((images_no_cat, images_chat), axis=0)
     Y = np.concatenate((labels_no_cat, labels_chat), axis=0)
 
-    print("Encoder les labels...")
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(Y)
 
     y_encoded = to_categorical(y_encoded, num_classes=2)
 
-    print("Normaliser les valeurs des pixels des images...")
     X_normalized = X / 255.0
 
     return X_normalized, y_encoded
 
 
 
-def data_load(type = None, img_path = None):
+def data_load(type = None, img_path = None, augmentation=0.0):
     if type != None:
         if not _check_data_folder() :
             data_desorganized_path = input("Les données ne sont pas organisées au bon format.\nChoisir un chemin ou vos données sont séparé en \"cat\" et \"no-cat\" : \n")
@@ -188,6 +189,15 @@ def data_load(type = None, img_path = None):
         if type != "train" and type != "test":
             raise ValueError("Le type doit être train ou test")
         path_data = os.path.join(_data_folder, type)
+        if type == "train":
+            if augmentation > 0.0:
+                # nombre d'iameg das les sous dosseirs path_data :
+                nb_total_data = 0
+                for file in os.listdir(path_data):
+                    nb_total_data += len(os.listdir(os.path.join(path_data, file)))
+                nb_augmentation = int(nb_total_data * augmentation)
+                data_augmentation(path_data, nb_augmentation)
+
         X, y = _data_normalized(path_data)
         return X, y
     else :

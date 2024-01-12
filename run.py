@@ -1,9 +1,13 @@
 import argparse
 
+from utils.utils import clear_terminal
+
 from train import train_model
 from evaluate import evaluate_model
 from detect import inferer_image
 from visual import interface
+
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--train', action='store_true')
@@ -15,6 +19,7 @@ if parser.parse_known_args()[0].train:
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--weight_name', type=str, default='model')
     parser.add_argument('--learning_rate', type=float, default=0.01)
+    parser.add_argument('--augmentation', type=float, default=0.0)
 elif parser.parse_known_args()[0].eval:
     parser.add_argument('--model_path', type=str, default='weights/model.tf')
     parser.add_argument('--metrics', type=list, default=['accuracy', 'confusion_matrix', 'classification_report'])
@@ -29,24 +34,18 @@ args = parser.parse_args()
 if sum([args.train, args.eval, args.detect]) > 1:
     raise ValueError("Seuls un argument parmi 'train', 'eval' et 'detect' peut être spécifié.")
 elif args.train:
-    print("train")
-    print("epoch:", args.epoch)
-    print("batch_size:", args.batch_size)
-    print("weight_name:", args.weight_name)
-    print("learning_rate:", args.learning_rate)
-    train_model(args.epoch, args.batch_size, args.weight_name, args.learning_rate)
+    clear_terminal()
+    print("Entrainement du model : \n \n \n")
+    train_model(args.epoch, args.batch_size, args.weight_name, args.learning_rate, args.augmentation)
 elif args.eval:
-    print("eval")
-    print("model_path:", args.model_path)
-    print("metrics:", args.metrics)
-    print("save_cm:", args.no_save_cm)
-    print("save_txt:", args.no_save_txt)
+    clear_terminal()
+    print("Evaluation du model : \n \n \n")
     evaluate_model(args.model_path, args.metrics, args.no_save_cm, args.no_save_txt)
 elif args.detect:
-    print("detecte")
-    print("image_path:", args.image_path)
-    print("model_path:", args.model_path)
+    clear_terminal()
+    print("Détection de la classe : \n \n \n")
     inferer_image(args.image_path, args.model_path)
 else:
-    print("run")
+    clear_terminal()
+    print("Interface lancée")
     interface()

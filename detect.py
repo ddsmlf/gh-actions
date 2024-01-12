@@ -1,3 +1,9 @@
+import os
+
+# Désactiver les options d'optimisation OneDNN
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+from utils.utils import clear_terminal
+
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.inception_v3 import preprocess_input, decode_predictions
 import numpy as np
@@ -25,9 +31,9 @@ def inferer_image(image_path, model_path):
 
     # Interpréter les résultats
     class_index = np.argmax(predictions)
-    classes = {0: 'No-Chat', 1: 'Chat'}
+    classes = {0: 'pas un chat', 1: 'chat'}
     predicted_class = classes[class_index]
-
+    clear_terminal()
     print(f"Prédiction pour l'image {image_path}: {predicted_class}")
     return predicted_class
 
