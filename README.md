@@ -13,22 +13,6 @@ Assurez-vous d'avoir les éléments suivants installés sur votre environnement 
 - tensorflow==2.15.0
 
 
-## Installation
-
-1. Clonez ce dépôt sur votre machine locale.
-2. Téléchargez le(s) dataset(s) de votre choix.
-3. Si les données sont déjà séparé ou que vous souahitez vous même le faire, extrayez les fichiers du dataset dans le répertoire `data` du projet. et séparer les fichiers de la facon suivante :
-   ```
-   > data
-   >> train
-   >>> no-cat
-   >>> cat
-   >> test
-   >>> no-cat
-   >>> cat
-   ```
-4. Sinon séparez les siplement en dossiers "cat" et "no-cat" dans un repertoir de votre choix, tel que "data_desoranizeds" par exemple.
-
 ## Utilisation
 
 Pour utiliser ce projet, vous pouvez exécuter le fichier `run.py` avec les arguments suivants :
@@ -65,15 +49,48 @@ python run.py --eval --model_path weights/model_890.tf
 
 ### Entrainement
 
+1. Clonez ce dépôt sur votre machine locale.
+2. Téléchargez le(s) dataset(s) de votre choix.
 3. Si les données sont déjà séparé ou que vous souahitez vous même le faire, extrayez les fichiers du dataset dans le répertoire `data` du projet. et séparer les fichiers de la facon suivante :
-```
-> data
->> train
->>> no-cat
->>> cat
->> test
->>> no-cat
->>> cat
+   ```
+   > data
+   >> train
+   >>> no-cat
+   >>> cat
+   >> test
+   >>> no-cat
+   >>> cat
+   ```
+4. Sinon séparez les siplement en dossiers "cat" et "no-cat" dans un repertoir de votre choix, tel que "data_desoranizeds" par exemple.
+
+```bash
+python run.py --train --epoch 10 --batch_size 64 --weight_name my_personal_weight --learning_rate 0.0001
 ```
 
+
 ## Information sur le modèle
+
+### Architechure du modèle
+
+1. **Couche d'Entrée (Flatten) :**
+   - **Fonction :** Cette couche est responsable de la transformation des images d'entrée en un format adapté pour le réseau de neurones.
+   - **Description :** Chaque image d'entrée, de taille 64x64 pixels avec 3 canaux de couleur (Rouge, Vert, Bleu), est aplatie dans un vecteur unidimensionnel. Cela signifie que chaque pixel de l'image est traité comme une caractéristique distincte.
+
+2. **Couche Cachée (Dense, Activation 'relu') :**
+   - **Fonction :** Cette couche est responsable de l'apprentissage des caractéristiques importantes des données d'entrée.
+   - **Description :** Les 64x64x3 caractéristiques (uniques pour chaque pixel et canal de couleur) sont connectées à 128 neurones. Chaque connexion est associée à un poids qui sera ajusté pendant l'entraînement. L'activation 'relu' signifie que seules les valeurs positives sont transmises au neurone suivant, introduisant ainsi une non-linéarité dans le modèle.
+
+3. **Couche de Sortie (Dense, Activation 'softmax') :**
+   - **Fonction :** Cette couche est responsable de la génération des prédictions du modèle.
+   - **Description :** Les 128 valeurs issues de la couche cachée sont connectées à 2 neurones de sortie, représentant les classes "No-Chat" et "Chat". L'activation 'softmax' normalise ces valeurs en probabilités, indiquant la probabilité que l'image appartienne à chaque classe. La classe avec la probabilité la plus élevée est alors considérée comme la prédiction finale.
+
+4. **Fonction de Perte (Categorical Crossentropy) :**
+   - **Fonction :** Mesure la différence entre les prédictions du modèle et les étiquettes réelles.
+   - **Description :** L'objectif est de minimiser cette fonction pendant l'entraînement, afin que les prédictions du modèle se rapprochent le plus possible des vraies étiquettes.
+
+5. **Optimiseur (Stochastic Gradient Descent, SGD) :**
+   - **Fonction :** Optimise les poids du modèle pour minimiser la fonction de perte.
+   - **Description :** L'optimiseur ajuste itérativement les poids du modèle pour réduire l'erreur entre les prédictions et les vraies étiquettes.
+
+En résumé, ce modèle prend des images de 64x64 pixels en entrée, apprend des caractéristiques importantes dans une couche cachée, et génère des prédictions pour deux classes (No-Chat et Chat) à l'aide d'une couche de sortie. L'entraînement vise à ajuster les poids pour que les prédictions soient aussi précises que possible.
+
