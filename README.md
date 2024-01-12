@@ -26,12 +26,13 @@ Pour utiliser ce projet, vous pouvez exécuter le fichier `run.py` avec les argu
    - `--batch_size` : taille du batch d'entraînement (par défaut: 32).
    - `--weight_name` : nom du fichier de sauvegarde des poids du modèle (par défaut: 'model').
    - `--learning_rate` : taux d'apprentissage du modèle (par défaut: 0.01).
+   - `--augmentation` : taux d'augmentation de la donnée (par défaut: 0.0).
 
 - `--eval` : pour évaluer le modèle.
    - `--model_path` : chemin vers le fichier de poids du modèle (par défaut: 'weights/model.tf').
    - `--metrics` : liste des métriques à calculer (par défaut: ['accuracy', 'confusion_matrix', 'classification_report']).
-   - `--no_save_cm` : désactiver la sauvegarde de la matrice de confusion (par défaut: True).
-   - `--no_save_txt` : désactiver la sauvegarde du rapport de classification (par défaut: True).
+   - `--no_save_cm` : désactiver la sauvegarde de la matrice de confusion (par défaut: activée).
+   - `--no_save_txt` : désactiver la sauvegarde du rapport de classification (par défaut: activée).
 
 - `--detect` : pour détecter une image.
    - `--image_path` : chemin vers l'image à détecter (obligatoire).
@@ -68,11 +69,13 @@ python run.py --eval --model_path weights/model_890.tf
 4. Sinon séparez les siplement en dossiers "cat" et "no-cat" dans un repertoir de votre choix, tel que "data_desoranizeds" par exemple.
 
 ```bash
-python run.py --train --epoch 10 --batch_size 64 --weight_name my_personal_weight --learning_rate 0.0001
+python run.py --train --epoch 10 --batch_size 64 --weight_name my_personal_weight --learning_rate 0.0001 --augmentation 0.2
 ```
 
 
 ## Information sur le modèle
+
+[Diaporama de présentation](https://www.canva.com/design/DAF5bDzfc-8/TaWygvwAZFYkLeaKwR2bTw/edit?utm_content=DAF5bDzfc-8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ### Architechure du modèle
 
