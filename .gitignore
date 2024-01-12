@@ -1,3 +1,18 @@
-# Ignore the 'data' directory
-data/
-data_desorganized
+*.h5
+*.tf
+metrics/*/
+data/*/
+data_desorganized/cat/*/
+data_desorganized/no-cat/*/
+./__pycache__
+*.pyc
+
+# igonre toutes les images :
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tif
+
+

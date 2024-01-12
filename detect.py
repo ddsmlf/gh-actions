@@ -1,30 +1,43 @@
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+import os
 
-from data_traitement import data_load
+# Désactiver les options d'optimisation OneDNN
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+from utils.utils import clear_terminal
+
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.inception_v3 import preprocess_input, decode_predictions
+import numpy as np
+from tensorflow.keras.models import load_model
+
+from utils.data_traitement import data_load
 
 
+def inferer_image(image_path, model_path):
+    """
+    Effectue une inférence sur une image à l'aide du modèle donné.
 
-def inferer_image(image_path, modele_poids):
+    Parameters:
+        image_path (str): Chemin vers l'image à inférer.
+        model_path (str): Chemin vers le fichier de poids du modèle.
 
+    Returns:
+        None
+    """
     image = data_load(img_path = image_path)
-    model = Sequential()
-    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)))
-    model.add(MaxPooling2D((2, 2)))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D((2, 2)))
-    model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dense(1, activation='sigmoid'))
+    model = load_model(model_path)
 
-    model.load_weights(modele_poids)
+    # Effectuer l'inférence
+    predictions = model.predict(image)
 
-    prediction = model.predict(image)
-    print(prediction)
-    label = "no-cat" if prediction[0, 0] > 0.5 else "chat"
-    print(f"Prédiction : {label}")
-    return label
+    # Interpréter les résultats
+    class_index = np.argmax(predictions)
+    classes = {0: 'pas un chat', 1: 'chat'}
+    predicted_class = classes[class_index]
+    clear_terminal()
+    print(f"Prédiction pour l'image {image_path}: {predicted_class}")
+    return predicted_class
+
 
 if __name__ == "__main__":
-    inferer_image("D:\\EPSI\\Bachelor\\B3\\int-cont\\gh-actions\\data\\test\\no-cat\\9152.jpg", "modele_poids.h5")
-    inferer_image("D:\\EPSI\\Bachelor\\B3\\int-cont\\gh-actions\\data\\test\\cat\\9428.jpg", "modele_poids.h5")
+    inferer_image("D:\\EPSI\\Bachelor\\B3\\int-cont\\gh-actions\\data\\test\\cat\\0.jpg", "weights/model.tf")
+    inferer_image("D:\\EPSI\\Bachelor\\B3\\int-cont\\gh-actions\\data\\test\\no-cat\\0a1a5a2140.jpg", "weights/model.tf")

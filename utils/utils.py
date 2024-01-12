@@ -1,12 +1,18 @@
 import os
+
+# Désactiver les options d'optimisation OneDNN
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+
 from PIL import Image
 from tensorflow.keras.preprocessing.image import img_to_array
 import numpy as np
+from tqdm import tqdm
 
 def charger_images(repertoire, label):
     images = []
     labels = []
-    for fichier in os.listdir(repertoire):
+    for fichier in tqdm(os.listdir(repertoire), desc=f"Chargement des images pour le label '{label}'"):
         chemin_fichier = os.path.join(repertoire, fichier)
 
         try:
@@ -32,3 +38,16 @@ def charger_image(path):
         image = image / 255.0
         image_input = np.expand_dims(image, axis=0)
         return image_input
+
+
+def clear_terminal():
+    """
+    Efface le terminal, fonctionne sur Windows, Linux, et macOS.
+    """
+    os_name = os.name
+
+    if os_name == 'nt':  # Windows
+        os.system('cls')
+    else:  # Linux and macOS
+        os.system('clear')
+
