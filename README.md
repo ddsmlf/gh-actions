@@ -1,35 +1,37 @@
 # Classification de Chats et no_cats
 
-Ce projet vise à réaliser une classification d'images de chats et non-chats. Les test on été effectué sur des datasets qui peuvent être téléchargé à partir des lien suivants : [Kaggle](https://www.kaggle.com/datasets/iamsouravbanerjee/animal-image-dataset-90-different-animals?resource=download) et [Archive.org](https://archive.org/details/CAT_DATASET).
+Ce projet vise à réaliser une classification d'images de chats et non-chats. Les test on été effectué sur des datasets qui peuvent être téléchargé à partir des lien suivants : [Kaggle](https://www.kaggle.com/datasets/iamsouravbanerjee/animal-image-dataset-90-different-animals?resource=download) pour les chats et [Archive.org](https://archive.org/details/CAT_DATASET) pour les non-chats.
+
+## Prérequis
+
+Assurez-vous d'avoir les éléments suivants installés sur votre environnement :
+
+- Python 3.10
+- numpy==1.24.1
+- Pillow==10.2.0
+- scikit_learn==1.3.2
+- tensorflow==2.15.0
+
 
 ## Installation
 
 1. Clonez ce dépôt sur votre machine locale.
-2. Téléchargez le dataset Microsoft cats and no-cats à partir du lien mentionné ci-dessus.
-3. Extrayez les fichiers du dataset dans le répertoire `data` du projet. 
-4. Séparer les fichiers de la facon suivante :
-```bash
-> data
->> train
->>> no-cat
->>> cat
->> test
->>> no-cat
->>> cat
-```
-
-## Prérequis
-
-Assurez-vous d'avoir les éléments suivants installés :
-
-- Python 3.10
-- Les bibliothèques nécessaires (voir le fichier `requirements.txt`)
+2. Téléchargez le(s) dataset(s) de votre choix.
+3. Si les données sont déjà séparé ou que vous souahitez vous même le faire, extrayez les fichiers du dataset dans le répertoire `data` du projet. et séparer les fichiers de la facon suivante :
+   ```
+   > data
+   >> train
+   >>> no-cat
+   >>> cat
+   >> test
+   >>> no-cat
+   >>> cat
+   ```
+4. Sinon séparez les siplement en dossiers "cat" et "no-cat" dans un repertoir de votre choix, tel que "data_desoranizeds" par exemple.
 
 ## Utilisation
 
-### Utilisation
-
-Pour utiliser ce projet, vous pouvez exécuter le fichier `main.py` avec les arguments suivants :
+Pour utiliser ce projet, vous pouvez exécuter le fichier `run.py` avec les arguments suivants :
 
 - `--train` : pour entraîner le modèle.
    - `--epoch` : nombre d'époques d'entraînement (par défaut: 5).
@@ -54,32 +56,24 @@ Si vous ne spécifiez aucun arguments vosu pourrez acceder a l'interface pour ef
 Exemples d'utilisation :
 ```bash
 
-python main.py 
+python run.py 
 ```
 ```bash
 
-python main.py --eval --model_path weights/model_890.tf
+python run.py --eval --model_path weights/model_890.tf
 ```
 
+### Entrainement
+
+3. Si les données sont déjà séparé ou que vous souahitez vous même le faire, extrayez les fichiers du dataset dans le répertoire `data` du projet. et séparer les fichiers de la facon suivante :
+```
+> data
+>> train
+>>> no-cat
+>>> cat
+>> test
+>>> no-cat
+>>> cat
+```
 
 ## Information sur le modèle
-
-1. **Couches de convolution (`Conv2D`) :**
-   - Les couches de convolution sont responsables de l'extraction des caractéristiques des images. Elles utilisent des filtres pour détecter des motifs tels que les bords, les formes, et les textures.
-   - Dans ce modèle, la première couche `Conv2D` a 32 filtres de taille (3, 3), ce qui signifie qu'elle applique 32 filtres 3x3 à l'image d'entrée.
-   - La deuxième couche `Conv2D` a 64 filtres de taille (3, 3). Cela permet d'apprendre des caractéristiques plus complexes par rapport à la première couche.
-
-2. **Couches de pooling (`MaxPooling2D`) :**
-   - Les couches de pooling (mise en commun) réduisent la dimension spatiale des images et conservent les caractéristiques les plus importantes. Elles réduisent également le nombre de paramètres et le coût de calcul.
-   - Dans ce modèle, après chaque couche de convolution, une couche `MaxPooling2D` avec une fenêtre de (2, 2) est utilisée. Cela réduit la taille de l'image de moitié à chaque fois.
-
-3. **Couche de flattening (`Flatten`) :**
-   - Cette couche transforme les données en un vecteur unidimensionnel. Elle prend la sortie de la dernière couche de pooling et la "déroule" pour l'aplatir avant de passer à des couches entièrement connectées.
-
-4. **Couches entièrement connectées (`Dense`) :**
-   - Ces couches utilisent tous les neurones pour apprendre des motifs complexes et effectuer la classification finale.
-   - La première couche `Dense` a 128 neurones, activés par la fonction ReLU. Cela permet au modèle d'apprendre des combinaisons complexes de caractéristiques extraites par les couches précédentes.
-   - La dernière couche `Dense` a 1 neurone avec une fonction d'activation `sigmoid` car il s'agit d'un problème de classification binaire (no_cat ou chat). La fonction `sigmoid` produit une sortie entre 0 et 1, indiquant la probabilité d'appartenance à la classe positive.
-
-
-
