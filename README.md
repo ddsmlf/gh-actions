@@ -6,11 +6,15 @@ Ce projet vise à réaliser une classification d'images de chats et non-chats. L
 
 Assurez-vous d'avoir les éléments suivants installés sur votre environnement :
 
-- Python 3.10
+- imgaug==0.4.0
+- matplotlib==3.6.3
 - numpy==1.24.1
+- opencv_python==4.7.0.68
 - Pillow==10.2.0
 - scikit_learn==1.3.2
+- seaborn==0.13.1
 - tensorflow==2.15.0
+- tqdm==4.66.1
 
 
 ## Utilisation
